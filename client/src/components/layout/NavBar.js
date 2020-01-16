@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Navbar, Nav } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { loadUser } from '../../actions/authActions';
 
-const NavBar = ({ isAuthenticated, user: { firstName, lastName } }) => {
+const NavBar = ({ isAuthenticated, user: { firstName, lastName }, loadUser }) => {
   const authLinks = (
     <Nav className='ml-auto'>
       <Nav.Link href='/profile'>
@@ -19,6 +20,13 @@ const NavBar = ({ isAuthenticated, user: { firstName, lastName } }) => {
       <Nav.Link href='/login'>Login</Nav.Link>
     </Nav>
   );
+
+  useEffect(() => {
+    loadUser();
+
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <Navbar bg='light' expand='lg'>
       <Navbar.Brand href='/'>CarpoolNG</Navbar.Brand>
@@ -34,7 +42,8 @@ const NavBar = ({ isAuthenticated, user: { firstName, lastName } }) => {
 
 NavBar.propTypes = {
   isAuthenticated: PropTypes.bool,
-  user: PropTypes.object
+  user: PropTypes.object,
+  loadUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -42,4 +51,4 @@ const mapStateToProps = state => ({
   user: state.auth.user
 });
 
-export default connect(mapStateToProps, {})(NavBar);
+export default connect(mapStateToProps, { loadUser })(NavBar);

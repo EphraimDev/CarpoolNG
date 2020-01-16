@@ -7,6 +7,12 @@ import store from './store';
 import Navbar from './components/layout/NavBar';
 import Home from './pages/Home';
 import Register from './pages/Register';
+import setAuthToken from './utils/setAuthToken';
+import Login from './pages/Login';
+
+if(localStorage.getItem('x-auth-token')){
+  setAuthToken(localStorage.getItem('x-auth-token'));
+}
 
 function App() {
   return (
@@ -17,6 +23,7 @@ function App() {
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/register' component={Register} />
+            <Route exact path='/login' component={Login} />
           </Switch>
         </Fragment>
       </Router>

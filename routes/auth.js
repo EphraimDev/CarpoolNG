@@ -9,17 +9,11 @@ const router = express.Router();
 const User = require('../models/User');
 
 // @route POST api/users
-// @desc Register a user
+// @desc Login a user
 // @access Public
 router.post(
   '/',
   [
-    check('firstName', 'Please add first name')
-      .not()
-      .isEmpty(),
-    check('lastName', 'Please add last name')
-      .not()
-      .isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
     check(
       'password',
@@ -32,27 +26,20 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { firstName, lastName, email, password } = req.body;
-
+    const { email, password } = req.body;
+    
     try {
       let user = await User.findOne({ email });
-
-      if (user) {
-        return res.status(400).json({ msg: 'User already exists' });
+      
+      if (!user) {
+        return res.status(400).json({ msg: 'User does not exist' });
       }
 
-      user = new User({
-        firstName,
-        lastName,
-        email,
-        password
-      });
+      const isMatch = await bcrypt.compare(password, user.password);
 
-      const salt = await bcrypt.genSalt(10);
-
-      user.password = await bcrypt.hash(password, salt);
-
-      await user.save();
+      if (!isMatch) {
+        return res.status(400).json({ msg: 'Invalid Credentials' });
+      }
 
       const payload = {
         user: {
@@ -64,34 +51,26 @@ router.post(
         payload,
         config.get('jwtsecret'),
         {
-          expiresIn: 3600
+          expiresIn: 360000
         },
         (err, token) => {
           if (err) throw err;
 
           const data = {
+            id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
-            email: user.email,
-            id: user._id
-          };
+            email: user.email
+          }
 
           res.json({ token, data });
         }
       );
     } catch (err) {
+      console.log(err)
       res.status(500).send('Server Error');
     }
   }
 );
-
-router.get('/', auth, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select('-password');
-    res.json(user);
-  } catch (err) {
-    res.status(500).send('Server error');
-  }
-});
 
 module.exports = router;

@@ -65,3 +65,8 @@ to place the content appropriately
 .checked {
   color: orange;
 }
+
+.auth-div {
+  margin-left: 0px;
+  margin-right: 0px;
+}
