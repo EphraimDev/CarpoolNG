@@ -28,7 +28,6 @@ const Home = ({ isAuthenticated }) => {
         </div>
         <div className='row'>
           <Card
-            style={{ width: '18rem' }}
             className='col-lg-4 col-md-6 col-sm-12 border-0'
           >
             <Card.Img variant='top' src='assets/images/car-1.jpg' />
@@ -49,7 +48,6 @@ const Home = ({ isAuthenticated }) => {
             </Card.Body>
           </Card>
           <Card
-            style={{ width: '18rem' }}
             className='col-lg-4 col-md-6 col-sm-12 border-0'
           >
             <Card.Img variant='top' src='assets/images/car-4.jpg' />
@@ -70,7 +68,6 @@ const Home = ({ isAuthenticated }) => {
             </Card.Body>
           </Card>
           <Card
-            style={{ width: '18rem' }}
             className='col-lg-4 col-md-6 col-sm-12 border-0'
           >
             <Card.Img variant='top' src='assets/images/car-3.jpg' />
