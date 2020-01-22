@@ -1,16 +1,29 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+// import { Redirect } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { loadUser } from '../../actions/authActions';
+import { loadUser, logOutAuth } from '../../actions/authActions';
 
-const NavBar = ({ isAuthenticated, user: { firstName, lastName }, loadUser }) => {
+const NavBar = ({
+  isAuthenticated,
+  user: { firstName, lastName },
+  loadUser,
+  logOutAuth
+}) => {
+  const logOut = async e => {
+    e.preventDefault();
+
+    await logOutAuth();
+  };
   const authLinks = (
     <Nav className='ml-auto'>
       <Nav.Link href='/profile'>
         {firstName} {lastName}
       </Nav.Link>
-      <Nav.Link href='/signout'>Sign Out</Nav.Link>
+      <Nav.Link href='#!' onClick={evt => logOut(evt)}>
+        Sign Out
+      </Nav.Link>
     </Nav>
   );
 
@@ -51,4 +64,4 @@ const mapStateToProps = state => ({
   user: state.auth.user
 });
 
-export default connect(mapStateToProps, { loadUser })(NavBar);
+export default connect(mapStateToProps, { loadUser, logOutAuth })(NavBar);

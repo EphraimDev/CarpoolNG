@@ -1,8 +1,15 @@
-import { REGISTER_SUCCESS, AUTH_FAIL, LOAD_USER, LOGIN_SUCCESS } from '../actions/types';
+import {
+  REGISTER_SUCCESS,
+  AUTH_FAIL,
+  LOAD_USER,
+  LOGIN_SUCCESS,
+  SET_LOADING,
+  LOG_OUT
+} from '../actions/types';
 
 const initialState = {
   isAuthenticated: null,
-  loading: false,
+  loading: true,
   token: null,
   user: {},
   error: null
@@ -29,6 +36,20 @@ export default function(state = initialState, action) {
         token: localStorage.getItem('x-auth-token')
       };
     case AUTH_FAIL:
+      return {
+        ...state,
+        isAuthenticated: false,
+        loading: false,
+        token: null,
+        user: {},
+        error: action.payload
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload
+      };
+    case LOG_OUT:
       return {
         ...state,
         isAuthenticated: false,

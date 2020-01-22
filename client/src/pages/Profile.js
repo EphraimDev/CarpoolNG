@@ -1,18 +1,69 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import SpinnerJS from '../components/layout/Spinner';
 
-const Profile = ({ user }) => {
-  return <div></div>;
+import ProfilePicture from '../components/profile/ProfilePicture';
+import ProfileData from '../components/profile/ProfileData';
+import { Button } from 'react-bootstrap';
+import Asset from '../components/assets/Asset';
+import { loadAssets } from '../actions/assetActions';
+
+const Profile = ({ user, loadAssets, assets }) => {
+  useEffect(() => {
+    loadAssets();
+
+    // eslint-disable-next-line
+  }, [])
+
+  assets && assets.length > 0 ? console.log(assets[0].brand): console.log(assets)
+
+  return user.firstName ? (
+    <div>
+      <div className='row bg-light profile-header'>
+        <div className='col-sm-12 col-md-6 col-xl-6 text-center'>
+          <ProfilePicture
+            firstName={user.firstName}
+            lastName={user.lastName}
+            image={user.picture}
+          />
+        </div>
+        <div className='col-sm-12 col-md-6 col-xl-6'>
+          <ProfileData
+            firstName={user.firstName}
+            lastName={user.lastName}
+            email={user.email}
+          />
+          <div>
+            <Button variant='primary' type='button' className='mr-2 ml-2'>
+              Update Account
+            </Button>
+            <Button variant='danger' type='button'>
+              Delete Account
+            </Button>
+          </div>
+        </div>
+      </div>
+      {assets && assets.length > 0 ? (
+      <div className="row profile-header mt-5">
+        <h3 className="text-center col-12">My Assets</h3>
+        {assets.map(asset => <Asset asset={asset} key={asset._id} />)}
+      </div>) : (<></>)}
+    </div>
+  ) : (
+    <SpinnerJS />
+  );
 };
 
 Profile.propTypes = {
-  user: PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
+  assets: PropTypes.array,
 };
 
 const mapStateToProps = state => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
+    assets: state.asset.assets
   };
 };
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, { loadAssets })(Profile);

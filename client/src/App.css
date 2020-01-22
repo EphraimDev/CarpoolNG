@@ -70,3 +70,15 @@ to place the content appropriately
   margin-left: 0px;
   margin-right: 0px;
 }
+
+.pp-image {
+  border-radius: 50%;
+  height: 300px;
+  width: 300px;
+
+}
+
+.profile-header {
+  margin-right: 0px;
+  margin-left: 0px;
+}
