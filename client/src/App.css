@@ -72,13 +72,34 @@ to place the content appropriately
 }
 
 .pp-image {
-  border-radius: 50%;
   height: 300px;
   width: 300px;
-
 }
 
 .profile-header {
   margin-right: 0px;
   margin-left: 0px;
+}
+
+.ml-60 {
+  margin-left: 40%;
+}
+
+.ml-50 {
+  margin-left: 20%;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) {
+  .profile-asset-size {
+    max-width: 70%;
+    margin-left: 15%;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .pp-image {
+    height: 200px;
+    width: 200px;
+  }
 }

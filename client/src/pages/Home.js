@@ -27,7 +27,7 @@ const Home = ({ isAuthenticated }) => {
           <h4>Popular Cars</h4>
         </div>
         <div className='row'>
-          <Card
+          <Card 
             className='col-lg-4 col-md-6 col-sm-12 border-0'
           >
             <Card.Img variant='top' src='assets/images/car-1.jpg' />

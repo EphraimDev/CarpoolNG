@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Profile from './pages/Profile';
 import PrivateRoute from './components/routing/PrivateRoute';
 import Authenticate from './components/routing/Authenticate';
+import AssetForm from './components/assets/AssetForm';
 
 if(localStorage.getItem('x-auth-token')){
   setAuthToken(localStorage.getItem('x-auth-token'));
@@ -28,6 +29,7 @@ function App() {
             <Authenticate path='/register' component={Register} />
             <Authenticate path='/login' component={Login} />
             <PrivateRoute exact path='/profile' component={Profile} />
+            <PrivateRoute exact path='/add/asset' component={AssetForm} />
             <Route exact path="*" component={Home} />
           </Switch>
         </Fragment>

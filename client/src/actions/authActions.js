@@ -7,7 +7,7 @@ import {
   LOG_OUT
 } from './types';
 import axios from 'axios';
-
+ 
 const config = {
   headers: {
     'Content-Type': 'application/json'

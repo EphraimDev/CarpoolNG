@@ -1,10 +1,8 @@
 import {
-  LOAD_ASSEST,
   LOAD_ASSESTS,
   ADD_ASSEST,
-  EDIT_ASSEST,
-  DELETE_ASSEST,
   SET_LOADING,
+  DELETE_ASSEST,
   ASSET_ERROR
 } from '../actions/types';
 import axios from 'axios';
@@ -17,8 +15,50 @@ const config = {
 
 export const addAsset = formData => async dispatch => {
   try {
-    setLoading(true);
-  } catch (error) {}
+    const res = await axios.post(`/api/assets`, formData, config);
+
+    dispatch({
+      type: ADD_ASSEST,
+      payload: res.data.asset
+    });
+  } catch (err) {
+    dispatch({
+      type: ASSET_ERROR,
+      payload: err.response.data.msg
+    });
+  }
+};
+
+export const updateAsset = (formData, id) => async dispatch => {
+  try {
+    const res = await axios.put(`/api/assets/${id}`, formData, config);
+
+    dispatch({
+      type: LOAD_ASSESTS,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: ASSET_ERROR,
+      payload: err.response.data.msg
+    });
+  }
+};
+
+export const deleteAsset = (id) => async dispatch => {
+  try {
+    await axios.delete(`/api/assets/${id}`);
+
+    dispatch({
+      type: DELETE_ASSEST,
+      payload: id
+    });
+  } catch (err) {
+    dispatch({
+      type: ASSET_ERROR,
+      payload: err.response.data.msg
+    });
+  }
 };
 
 export const loadAssets = () => async dispatch => {
@@ -26,13 +66,12 @@ export const loadAssets = () => async dispatch => {
     setLoading(true);
 
     const res = await axios.get('/api/assets');
-    // console.log(res.data);
+
     dispatch({
       type: LOAD_ASSESTS,
       payload: res.data
     });
   } catch (err) {
-    console.log(err.response.data);
     dispatch({
       type: ASSET_ERROR,
       payload: err.response
@@ -41,6 +80,7 @@ export const loadAssets = () => async dispatch => {
 };
 
 export const setLoading = state => async dispatch => {
+  console.log(state);
   dispatch({
     type: SET_LOADING,
     payload: state
