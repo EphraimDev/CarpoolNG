@@ -15,6 +15,18 @@ const UserSchema = mongoose.Schema({
     required: true,
     unique: true
   },
+  phone: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  city: {
+    type: String
+  },
+  state: {
+    type: String
+  },
   password: {
     type: String,
     required: true
@@ -22,6 +34,10 @@ const UserSchema = mongoose.Schema({
   picture: {
     type: String,
     required: false
+  },
+  verified: {
+    type: Boolean,
+    default: false
   }
 });
 

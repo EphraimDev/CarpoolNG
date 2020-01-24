@@ -4,13 +4,21 @@ import {
   AUTH_FAIL,
   LOAD_USER,
   SET_LOADING,
-  LOG_OUT
+  LOG_OUT,
+  UPDATE_USER,
+  DELETE_USER
 } from './types';
 import axios from 'axios';
- 
-const config = {
+
+const authConfig = {
   headers: {
     'Content-Type': 'application/json'
+  }
+};
+
+const config = {
+  headers: {
+    'Content-Type': 'multipart/form-data'
   }
 };
 
@@ -26,7 +34,6 @@ export const register = formData => async dispatch => {
 
     window.location.href = '/profile';
   } catch (err) {
-    console.log(err.response.data.msg);
     dispatch({
       type: AUTH_FAIL,
       payload: err.response.data.msg
@@ -38,7 +45,7 @@ export const login = formData => async dispatch => {
   try {
     setLoading(true);
     const res = await axios.post('/api/auth', formData, config);
-    console.log(res.data);
+
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data
@@ -46,7 +53,22 @@ export const login = formData => async dispatch => {
 
     window.location.href = '/profile';
   } catch (err) {
-    console.log(err.response);
+    dispatch({
+      type: AUTH_FAIL,
+      payload: err.response.data
+    });
+  }
+};
+
+export const updateUser = formData => async dispatch => {
+  try {
+    const res = await axios.put('/api/users', formData, authConfig);
+
+    dispatch({
+      type: UPDATE_USER,
+      payload: res.data
+    });
+  } catch (err) {
     dispatch({
       type: AUTH_FAIL,
       payload: err.response.data
@@ -68,6 +90,20 @@ export const loadUser = () => async dispatch => {
     dispatch({
       type: AUTH_FAIL
     });
+  }
+};
+
+export const deleteUser = () => async dispatch => {
+  try {
+    await axios.delete('/api/users');
+
+    dispatch({
+      type: DELETE_USER
+    });
+
+    window.location.href = '/';
+  } catch (err) {
+    window.location.href = '/profile';
   }
 };
 
